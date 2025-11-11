@@ -2,11 +2,31 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
+
+func listDist(left []int, right []int) int {
+	// I don't like that this sorts the input, this operation should not modify them
+	// However, for the challenge I am going to leave it because it doesn't matter
+	sort.Ints(left)
+	sort.Ints(right)
+
+	dist := 0
+	for i := range(left) {
+		if left[i] <= right[i] {
+			dist += right[i] - left[i]
+		} else {
+			dist += left[i] - right[i]
+		}
+	}
+
+	return dist
+}
 
 func main() {
 	if len(os.Args) < 2 {
@@ -40,5 +60,8 @@ func main() {
 
 		right = append(right, rightValue)
 	}
+
+	dist := listDist(left, right)
+	fmt.Printf("%d\n", dist)
 }
 
