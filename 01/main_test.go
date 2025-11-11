@@ -29,3 +29,15 @@ func TestListDistSample(t *testing.T) {
 	}
 }
 
+func TestListSimilaritySample(t *testing.T) {
+	left := []int{3, 4, 2, 1, 3, 3}
+	right := []int{4, 3, 5, 3, 9, 3}
+	expected := 31
+
+	dist := listSimilarity(left, right)
+
+	if (expected != dist) {
+		t.Errorf("Expected %d to be %d", expected, dist)
+	}
+}
+

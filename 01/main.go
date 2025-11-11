@@ -28,6 +28,20 @@ func listDist(left []int, right []int) int {
 	return dist
 }
 
+func listSimilarity(left []int, right []int) int {
+	rightCounts := make(map[int]int)
+	for _, v := range(right) {
+		rightCounts[v] += 1
+	}
+
+	similarity := 0
+	for _, v := range(left) {
+		similarity += v * rightCounts[v]
+	}
+
+	return similarity
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatal("You must provide an input file")
@@ -62,6 +76,9 @@ func main() {
 	}
 
 	dist := listDist(left, right)
-	fmt.Printf("%d\n", dist)
+	fmt.Printf("dist: %d\n", dist)
+
+	similarity := listSimilarity(left, right)
+	fmt.Printf("similarity: %d\n", similarity)
 }
 
