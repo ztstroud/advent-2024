@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -11,6 +12,15 @@ func main() {
 		log.Fatal("You must provide an input file")
 	}
 
-	fmt.Printf("%s\n%s\n", os.Args[0], os.Args[1])
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal("Failed to read from file: ", path, err)
+	}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
 }
 
