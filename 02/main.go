@@ -26,9 +26,14 @@ func isReportSafe(report []int) bool {
 		return true
 	}
 
+	const maxDiff = 2
 	for i := range(len(report) - 1) {
 		diff := report[i + 1] - report[i]
 		if diff == 0 {
+			return false
+		}
+
+		if diff < -maxDiff || diff > maxDiff {
 			return false
 		}
 	}

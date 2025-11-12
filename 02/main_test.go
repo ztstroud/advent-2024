@@ -77,3 +77,23 @@ func TestIsReportSafeDuplicate(t *testing.T) {
 	}
 }
 
+func TestIsReportSafeLargeGapPositive(t *testing.T) {
+	input := []int{1, 4}
+	expected := false
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
+func TestIsReportSafeLargeGapNegative(t *testing.T) {
+	input := []int{4, 1}
+	expected := false
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
