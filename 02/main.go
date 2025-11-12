@@ -1,6 +1,10 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -47,5 +51,33 @@ func isReportSafe(report []int) bool {
 	}
 
 	return true
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatal("You must provide an input file")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal("Failed to read from file: ", path, err)
+	}
+
+	safeCount := 0
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		report, err := parseReport(scanner.Text())
+		if err != nil {
+			log.Fatal("Error reading report: ", scanner.Text(), err)
+		}
+
+		if isReportSafe(report) {
+			safeCount += 1
+		}
+	}
+
+	fmt.Printf("Safe reports: %d\n", safeCount)
 }
 
