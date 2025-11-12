@@ -47,3 +47,23 @@ func TestParseReportMany(t *testing.T) {
 	}
 }
 
+func TestIsReportSafeEmpty(t *testing.T) {
+	input := []int{}
+	expected := true
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
+func TestIsReportSafeSingle(t *testing.T) {
+	input := []int{1}
+	expected := true
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+

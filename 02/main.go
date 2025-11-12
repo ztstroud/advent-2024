@@ -21,3 +21,7 @@ func parseReport(report string) ([]int, error) {
 	return vals, nil
 }
 
+func isReportSafe(report []int) bool {
+	return true
+}
+
