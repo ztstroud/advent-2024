@@ -31,3 +31,12 @@ everything, and it will need to be able to execute a single check (skipping the
 invalid value) when an error is found. This means I will need to pull out the
 specific check logic as well.
 
+## Sequence Direction
+
+I originally was thinking that you could look at the diff between the first and
+last entries in the report to get the sign you expect to see. However, I
+realized that that is only true when you are not dampening. If you can remove
+one value, it could be the first or last value, and this invalidates this
+approach. For instance, [1, 2, 3, 4, 5, 0] looks like it should be negative by
+this approach, but we would actually remove the 0 and the sequence is positive.
+
