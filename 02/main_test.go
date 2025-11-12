@@ -78,7 +78,7 @@ func TestIsReportSafeDuplicate(t *testing.T) {
 }
 
 func TestIsReportSafeLargeGapPositive(t *testing.T) {
-	input := []int{1, 4}
+	input := []int{1, 100}
 	expected := false
 	actual := isReportSafe(input)
 
@@ -88,7 +88,7 @@ func TestIsReportSafeLargeGapPositive(t *testing.T) {
 }
 
 func TestIsReportSafeLargeGapNegative(t *testing.T) {
-	input := []int{4, 1}
+	input := []int{100, 1}
 	expected := false
 	actual := isReportSafe(input)
 

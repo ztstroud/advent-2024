@@ -34,7 +34,7 @@ func isReportSafe(report []int) bool {
 	// direction of the sequence will be irrelevant
 	positive := report[1] - report[0] > 0
 
-	const maxDiff = 2
+	const maxDiff = 3
 	for i := range(len(report) - 1) {
 		diff := report[i + 1] - report[i]
 		if diff == 0 {
