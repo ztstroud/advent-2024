@@ -117,3 +117,23 @@ func TestIsReportSafeDescendAscend(t *testing.T) {
 	}
 }
 
+func TestIsReportSafeAllAscend(t *testing.T) {
+	input := []int{1, 2, 4}
+	expected := true
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
+func TestIsReportSafeAllDescend(t *testing.T) {
+	input := []int{4, 2, 1}
+	expected := true
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
