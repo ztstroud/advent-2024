@@ -22,6 +22,17 @@ func parseReport(report string) ([]int, error) {
 }
 
 func isReportSafe(report []int) bool {
+	if len(report) <= 1 {
+		return true
+	}
+
+	for i := range(len(report) - 1) {
+		diff := report[i + 1] - report[i]
+		if diff == 0 {
+			return false
+		}
+	}
+
 	return true
 }
 

@@ -67,3 +67,13 @@ func TestIsReportSafeSingle(t *testing.T) {
 	}
 }
 
+func TestIsReportSafeDuplicate(t *testing.T) {
+	input := []int{1, 1}
+	expected := false
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
