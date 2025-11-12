@@ -66,6 +66,15 @@ func reportFailsAt(report []int) (errorAt int) {
 	return -1
 }
 
+func cloneWithout(report []int, i int) []int {
+	clone := make([]int, 0, len(report) - 1)
+
+	clone = append(clone, report[:i]...)
+	clone = append(clone, report[i + 1:]...)
+
+	return clone
+}
+
 func isReportSafeDampened(report []int) bool {
 	if len(report) <= 1 {
 		return true
@@ -76,10 +85,11 @@ func isReportSafeDampened(report []int) bool {
 		return true
 	}
 
-	removeBefore := isReportSafe(append(report[:errorAt - 1], report[errorAt:]...))
-	removeAfter := isReportSafe(append(report[:errorAt], report[errorAt + 1:]...))
+	removePrevious := errorAt >= 2 && isReportSafe(cloneWithout(report, errorAt - 2))
+	removeBefore := isReportSafe(cloneWithout(report, errorAt - 1))
+	removeAfter := isReportSafe(cloneWithout(report, errorAt))
 
-	return removeBefore || removeAfter
+	return removePrevious || removeBefore || removeAfter
 }
 
 func main() {
