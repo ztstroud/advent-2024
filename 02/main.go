@@ -76,10 +76,11 @@ func isReportSafeDampened(report []int) bool {
 		return true
 	}
 
+	removePrevious := errorAt >= 2 && isReportSafe(append(report[:errorAt - 2], report[errorAt - 1:]...))
 	removeBefore := isReportSafe(append(report[:errorAt - 1], report[errorAt:]...))
 	removeAfter := isReportSafe(append(report[:errorAt], report[errorAt + 1:]...))
 
-	return removeBefore || removeAfter
+	return removePrevious || removeBefore || removeAfter
 }
 
 func main() {
