@@ -26,22 +26,7 @@ func parseReport(report string) ([]int, error) {
 }
 
 func isReportSafe(report []int) bool {
-	if len(report) <= 1 {
-		return true
-	}
-
-	// If the first diff is zero, it will be immediately rejected and the
-	// direction of the sequence will be irrelevant
-	positive := report[1] - report[0] > 0
-
-	for i := range(len(report) - 1) {
-		diff := report[i + 1] - report[i]
-		if !diffIsSafe(diff, positive) {
-			return false
-		}
-	}
-
-	return true
+	return reportFailsAt(report) == -1
 }
 
 func diffIsSafe(diff int, positive bool) bool {
@@ -62,6 +47,24 @@ func diffIsSafe(diff int, positive bool) bool {
 	return true
 }
 
+func reportFailsAt(report []int) (errorAt int) {
+	if len(report) <= 1 {
+		return -1
+	}
+
+	// If the first diff is zero, it will be immediately rejected and the
+	// direction of the sequence will be irrelevant
+	positive := report[1] - report[0] > 0
+
+	for i := range(len(report) - 1) {
+		diff := report[i + 1] - report[i]
+		if !diffIsSafe(diff, positive) {
+			return i + 1
+		}
+	}
+
+	return -1
+}
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatal("You must provide an input file")
