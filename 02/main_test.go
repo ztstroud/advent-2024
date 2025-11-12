@@ -97,3 +97,23 @@ func TestIsReportSafeLargeGapNegative(t *testing.T) {
 	}
 }
 
+func TestIsReportSafeAscendDescend(t *testing.T) {
+	input := []int{1, 2, 1}
+	expected := false
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
+func TestIsReportSafeDescendAscend(t *testing.T) {
+	input := []int{1, 2, 1}
+	expected := false
+	actual := isReportSafe(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+

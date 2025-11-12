@@ -26,6 +26,10 @@ func isReportSafe(report []int) bool {
 		return true
 	}
 
+	// If the first diff is zero, it will be immediately rejected and the
+	// direction of the sequence will be irrelevant
+	positive := report[1] - report[0] > 0
+
 	const maxDiff = 2
 	for i := range(len(report) - 1) {
 		diff := report[i + 1] - report[i]
@@ -34,6 +38,10 @@ func isReportSafe(report []int) bool {
 		}
 
 		if diff < -maxDiff || diff > maxDiff {
+			return false
+		}
+
+		if diff > 0 != positive {
 			return false
 		}
 	}
