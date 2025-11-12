@@ -137,3 +137,43 @@ func TestIsReportSafeAllDescend(t *testing.T) {
 	}
 }
 
+func TestIsReportSafeDampenedFirst(t *testing.T) {
+	input := []int{0, 3, 2, 1}
+	expected := true
+	actual := isReportSafeDampened(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
+func TestIsReportSafeDampenedSecond(t *testing.T) {
+	input := []int{3, 0, 2, 1}
+	expected := true
+	actual := isReportSafeDampened(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
+func TestIsReportSafeDampenedThird(t *testing.T) {
+	input := []int{3, 2, 0, 1}
+	expected := true
+	actual := isReportSafeDampened(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
+func TestIsReportSafeDampenedLast(t *testing.T) {
+	input := []int{3, 2, 1, 0}
+	expected := true
+	actual := isReportSafeDampened(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to equal %v\n", actual, expected)
+	}
+}
+
