@@ -65,6 +65,21 @@ func reportFailsAt(report []int) (errorAt int) {
 
 	return -1
 }
+
+func isReportSafeDampened(report []int) bool {
+	if len(report) <= 1 {
+		return true
+	}
+
+	errorAt := reportFailsAt(report)
+	if errorAt == -1 {
+		return true
+	}
+
+	dampened := append(report[:errorAt], report[errorAt + 1:]...)
+	return reportFailsAt(dampened) == -1
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatal("You must provide an input file")
@@ -77,6 +92,7 @@ func main() {
 	}
 
 	safeCount := 0
+	dampenedCount := 0
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -88,8 +104,13 @@ func main() {
 		if isReportSafe(report) {
 			safeCount += 1
 		}
+
+		if isReportSafeDampened(report) {
+			dampenedCount += 1
+		}
 	}
 
 	fmt.Printf("Safe reports: %d\n", safeCount)
+	fmt.Printf("Safe dampened reports: %d\n", dampenedCount)
 }
 
