@@ -8,7 +8,11 @@ import (
 func TestParseReportEmpty(t *testing.T) {
 	input := ""
 	expected := []int{}
-	actual := parseReport(input)
+	actual, err := parseReport(input)
+
+	if err != nil {
+		t.Errorf("Got an error: %v\n", err)
+	}
 
 	if !reflect.DeepEqual(expected, actual) {
 		t.Errorf("Expected %v to equal %v\n", actual, expected)
