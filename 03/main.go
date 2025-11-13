@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 /*
@@ -32,6 +33,36 @@ func sumMuls(memory string) int {
 		}
 
 		sum += left * right
+	}
+
+	return sum
+}
+
+func sumMulsConditional(memory string) int {
+	sum := 0
+
+	const on = "do()"
+	const off = "don't()"
+
+	for len(memory) > 0 {
+		offIndex := strings.Index(memory, off)
+
+		if offIndex == -1 {
+			sum += sumMuls(memory)
+			break
+		}
+
+		sum += sumMuls(memory[:offIndex])
+
+		afterOffIndex := offIndex + len(off)
+		onOffset := strings.Index(memory[afterOffIndex:], on)
+
+		if onOffset == -1 {
+			break
+		} else {
+			afterOnIndex := afterOffIndex + onOffset + len(on)
+			memory = memory[afterOnIndex:]
+		}
 	}
 
 	return sum
