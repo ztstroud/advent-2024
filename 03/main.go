@@ -79,6 +79,8 @@ func main() {
 		log.Fatalf("Failed to read from file '%s': %v", path, err)
 	}
 
-	fmt.Printf("Sum of muls: %d\n", sumMuls(string(bytes)))
+	str := string(bytes)
+	fmt.Printf("Sum of muls: %d\n", sumMuls(str))
+	fmt.Printf("Sum of muls conditional: %d\n", sumMulsConditional(str))
 }
 
