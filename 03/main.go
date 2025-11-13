@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"regexp"
 	"strconv"
 )
@@ -33,5 +35,19 @@ func sumMuls(memory string) int {
 	}
 
 	return sum
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input file")
+	}
+
+	path := os.Args[1]
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatalf("Failed to read from file '%s': %v", path, err)
+	}
+
+	fmt.Printf("Sum of muls: %d\n", sumMuls(string(bytes)))
 }
 
