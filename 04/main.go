@@ -28,3 +28,12 @@ func extractDiagonal(grid []string, x, y, length int) string {
 	return string(bytes)
 }
 
+func countGridOccurances(grid []string, query string) int {
+	sum := 0
+	for _, row := range grid {
+		sum += countOccurrences(row, query)
+	}
+
+	return sum
+}
+
