@@ -53,3 +53,11 @@ func countDiagonalOccurances(grid []string, query string) int {
 	return count
 }
 
+func countCrosswordOccurrences(grid []string, query string) int {
+	rotated := rotate90(grid)
+	return countGridOccurances(grid, query) +
+		countGridOccurances(rotated, query) +
+		countDiagonalOccurances(grid, query) +
+		countDiagonalOccurances(rotated, query)
+}
+

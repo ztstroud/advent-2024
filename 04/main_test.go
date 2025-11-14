@@ -63,3 +63,22 @@ func TestCountDiagonalOccurrences(t *testing.T) {
 	}
 }
 
+func TestCountCrosswordOccurrences(t *testing.T) {
+	input := []string {
+		"S.SAMX.",
+		".A.XMAS",
+		"X.M..SA",
+		"M.XXA.M",
+		"A..MM.X",
+		"S.X.AA.",
+		".....SS",
+	}
+
+	expected := 8
+	actual := countCrosswordOccurrences(input, "XMAS")
+
+	if expected != actual {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
