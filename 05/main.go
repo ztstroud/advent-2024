@@ -1,6 +1,10 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -74,5 +78,52 @@ func parsePages(src string) ([]int, error) {
 	}
 
 	return pages, nil
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input file\n")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Failed to read from file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	rules := make([]Ordering, 0)
+	for scanner.Scan() {
+		orderingSrc := scanner.Text()
+
+		if orderingSrc == "" {
+			break
+		}
+
+		ordering, err := parseOrdering(orderingSrc)
+		if err != nil {
+			log.Fatalf("Failed to parse ordering: %s\n%v\n", orderingSrc, err)
+		}
+
+		rules = append(rules, ordering)
+	}
+
+	sum := 0
+	for scanner.Scan() {
+		pagesSrc := scanner.Text()
+
+		pages, err := parsePages(pagesSrc)
+		if err != nil {
+			log.Fatalf("Failed to parse pages: %s\n%v\n", pagesSrc, err)
+		}
+
+		if validate(pages, rules) {
+			sum += pages[len(pages) / 2]
+		}
+	}
+
+	fmt.Printf("Sum of middle pages of valid updates: %d\n", sum)
 }
 
