@@ -56,3 +56,20 @@ func TestCountGridOccurrences(t *testing.T) {
 	}
 }
 
+func TestCountDiagonalOccurrences(t *testing.T) {
+	input := []string {
+		"..XX...",
+		".X.MM..",
+		"..M.AA.",
+		"...A.SS",
+		"....S..",
+	}
+
+	expected := 3
+	actual := countDiagonalOccurances(input, "XMAS")
+
+	if expected != actual {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+

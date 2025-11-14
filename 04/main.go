@@ -37,3 +37,24 @@ func countGridOccurances(grid []string, query string) int {
 	return sum
 }
 
+func countDiagonalOccurances(grid []string, query string) int {
+	reverseQuery := revrseByBytes(query)
+
+	count := 0
+	for y := range len(grid) - len(query) + 1 {
+		for x := range len(grid[y]) - len(query) + 1 {
+			extracted := extractDiagonal(grid, x, y, len(query))
+
+			if query == extracted {
+				count += 1
+			}
+
+			if reverseQuery == extracted {
+				count += 1
+			}
+		}
+	}
+
+	return count
+}
+
