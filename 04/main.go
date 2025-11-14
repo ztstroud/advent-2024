@@ -19,3 +19,12 @@ func countOccurrences(text, query string) int {
 	return strings.Count(text, query) + strings.Count(text, reverseQuery)
 }
 
+func extractDiagonal(grid []string, x, y, length int) string {
+	bytes := make([]byte, length)
+	for i := range length {
+		bytes[i] = grid[y + i][x + i]
+	}
+
+	return string(bytes)
+}
+

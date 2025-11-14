@@ -24,3 +24,20 @@ func TestCountOccurances(t *testing.T) {
 	}
 }
 
+func TestExtractDiagonal(t *testing.T) {
+	input := []string {
+		"......",
+		"..X...",
+		"...X..",
+		"....X.",
+		"......",
+	}
+
+	expected := "XXX"
+	actual := extractDiagonal(input, 2, 1, 3)
+
+	if expected != actual {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
