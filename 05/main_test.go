@@ -21,3 +21,48 @@ func TestGetPageIndices(t *testing.T) {
 	}
 }
 
+func TestValidate(t *testing.T) {
+	pages := []int{10, 15, 20}
+	rules := []Ordering{
+		{ before: 10, after: 15 },
+		{ before: 10, after: 20 },
+	}
+
+	actual := validate(pages, rules)
+	expected := true
+
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
+func TestValidateNoRulesApply(t *testing.T) {
+	pages := []int{10, 15, 20}
+	rules := []Ordering{
+		{ before: 5, after: 15 },
+		{ before: 10, after: 25 },
+	}
+
+	actual := validate(pages, rules)
+	expected := true
+
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
+func TestValidateInvalid(t *testing.T) {
+	pages := []int{10, 15, 20}
+	rules := []Ordering{
+		{ before: 10, after: 15 },
+		{ before: 20, after: 15 },
+	}
+
+	actual := validate(pages, rules)
+	expected := false
+
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
