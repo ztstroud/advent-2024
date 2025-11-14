@@ -11,14 +11,6 @@ func revrseByBytes(text string) string {
 	return string(bytes)
 }
 
-/*
-Counts occurrences of the query string both forwards and backwards.
-*/
-func countOccurrences(text, query string) int {
-	reverseQuery := revrseByBytes(query)
-	return strings.Count(text, query) + strings.Count(text, reverseQuery)
-}
-
 func extractDiagonal(grid []string, x, y, length int) string {
 	bytes := make([]byte, length)
 	for i := range length {
@@ -29,9 +21,12 @@ func extractDiagonal(grid []string, x, y, length int) string {
 }
 
 func countGridOccurances(grid []string, query string) int {
+	reverseQuery := revrseByBytes(query)
+
 	sum := 0
 	for _, row := range grid {
-		sum += countOccurrences(row, query)
+		sum += strings.Count(row, query)
+		sum += strings.Count(row, reverseQuery)
 	}
 
 	return sum

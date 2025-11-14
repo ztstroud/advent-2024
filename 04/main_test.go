@@ -14,16 +14,6 @@ func TestReverseByBytes(t *testing.T) {
 	}
 }
 
-func TestCountOccurances(t *testing.T) {
-	input := "AXMASSMASAMXMASS"
-	expected := 3
-	actual := countOccurrences(input, "XMAS")
-
-	if expected != actual {
-		t.Errorf("Expected %v to be %v", actual, expected)
-	}
-}
-
 func TestExtractDiagonal(t *testing.T) {
 	input := []string {
 		"......",
