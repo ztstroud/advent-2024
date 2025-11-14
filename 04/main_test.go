@@ -97,3 +97,20 @@ func TestXmasAt(t *testing.T) {
 	}
 }
 
+func TestCountXmas(t *testing.T) {
+	input := []string {
+		"MSSS.",
+		".AA..",
+		"MMSM.",
+		"..A..",
+		".S.S.",
+	}
+
+	expected := 3
+	actual := countXmas(input)
+
+	if expected != actual {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+

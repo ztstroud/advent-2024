@@ -81,6 +81,19 @@ func xmasAt(grid []string, x, y int) bool {
 		c00 == 'S' && c11 == 'M' && c01 == 'S' && c10 == 'M'
 }
 
+func countXmas(grid []string) int {
+	count := 0
+	for y := range len(grid) - 2 {
+		for x := range len(grid[y]) - 2 {
+			if xmasAt(grid, x, y) {
+				count += 1
+			}
+		}
+	}
+
+	return count
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must provide an input file\n")
