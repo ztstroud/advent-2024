@@ -1,6 +1,10 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
 	"slices"
 	"strings"
 )
@@ -59,5 +63,29 @@ func countCrosswordOccurrences(grid []string, query string) int {
 		countGridOccurances(rotated, query) +
 		countDiagonalOccurances(grid, query) +
 		countDiagonalOccurances(rotated, query)
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input file\n")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Failed to read file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	grid := make([]string, 0)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		grid = append(grid, scanner.Text())
+	}
+
+	query := "XMAS"
+	queryCount := countCrosswordOccurrences(grid, query)
+
+	fmt.Printf("%s occurs %d times\n", query, queryCount)
 }
 
