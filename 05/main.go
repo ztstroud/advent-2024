@@ -1,5 +1,10 @@
 package main
 
+import (
+	"strconv"
+	"strings"
+)
+
 func getPageIndices(pages []int) map[int]int {
 	indices := make(map[int]int)
 	for index, page := range pages {
@@ -34,5 +39,24 @@ func validate(pages []int, rules []Ordering) bool {
 	}
 
 	return true
+}
+
+func parseOrdering(src string) (Ordering, error) {
+	pages := strings.SplitN(src, "|", 2)
+
+	before, err := strconv.Atoi(pages[0])
+	if err != nil {
+		return Ordering{}, err
+	}
+
+	after, err := strconv.Atoi(pages[1])
+	if err != nil {
+		return Ordering{}, err
+	}
+
+	return Ordering{
+		before: before,
+		after: after,
+	}, nil
 }
 

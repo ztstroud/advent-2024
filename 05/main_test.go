@@ -66,3 +66,27 @@ func TestValidateInvalid(t *testing.T) {
 	}
 }
 
+func TestParseOrdering(t *testing.T) {
+	actual, err := parseOrdering("25|499")
+	expected := Ordering{
+		before: 25,
+		after: 499,
+	}
+
+	if err != nil {
+		t.Errorf("Got an error: %v", err)
+	}
+
+	if actual != expected {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
+func TestParseExtraPipe(t *testing.T) {
+	_, err := parseOrdering("25|499|1")
+
+	if err == nil {
+		t.Errorf("Did not received expected error")
+	}
+}
+
