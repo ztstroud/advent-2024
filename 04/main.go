@@ -114,7 +114,9 @@ func main() {
 
 	query := "XMAS"
 	queryCount := countCrosswordOccurrences(grid, query)
+	xmasCount := countXmas(grid)
 
 	fmt.Printf("%s occurs %d times\n", query, queryCount)
+	fmt.Printf("%d X-MAS\n", xmasCount)
 }
 
