@@ -60,3 +60,19 @@ func parseOrdering(src string) (Ordering, error) {
 	}, nil
 }
 
+func parsePages(src string) ([]int, error) {
+	pageSrcs := strings.Split(src, ",")
+	pages := make([]int, len(pageSrcs))
+
+	for i, pageSrc := range pageSrcs {
+		page, err := strconv.Atoi(pageSrc)
+		if err != nil {
+			return nil, err
+		}
+
+		pages[i] = page
+	}
+
+	return pages, nil
+}
+

@@ -90,3 +90,24 @@ func TestParseExtraPipe(t *testing.T) {
 	}
 }
 
+func TestParsePages(t *testing.T) {
+	actual, err := parsePages("25,499,33,75")
+	expected := []int{ 25, 499, 33, 75 }
+
+	if err != nil {
+		t.Errorf("Got an error: %v", err)
+	}
+
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
+func TestParsePagesInvalid(t *testing.T) {
+	_, err := parsePages("25,4X9,33,75")
+
+	if err == nil {
+		t.Errorf("Did not received expected error")
+	}
+}
+
