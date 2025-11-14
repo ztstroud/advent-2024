@@ -65,6 +65,22 @@ func countCrosswordOccurrences(grid []string, query string) int {
 		countDiagonalOccurances(rotated, query)
 }
 
+func xmasAt(grid []string, x, y int) bool {
+	if grid[y + 1][x + 1] != 'A' {
+		return false
+	}
+
+	c00 := grid[y][x]
+	c01 := grid[y][x + 2]
+	c10 := grid[y + 2][x]
+	c11 := grid[y + 2][x + 2]
+
+	return c00 == 'M' && c11 == 'S' && c01 == 'M' && c10 == 'S' ||
+		c00 == 'S' && c11 == 'M' && c01 == 'M' && c10 == 'S' ||
+		c00 == 'M' && c11 == 'S' && c01 == 'S' && c10 == 'M' ||
+		c00 == 'S' && c11 == 'M' && c01 == 'S' && c10 == 'M'
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must provide an input file\n")

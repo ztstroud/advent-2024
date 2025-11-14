@@ -82,3 +82,18 @@ func TestCountCrosswordOccurrences(t *testing.T) {
 	}
 }
 
+func TestXmasAt(t *testing.T) {
+	input := []string {
+		"M.S",
+		".A.",
+		"M.S",
+	}
+
+	expected := true
+	actual := xmasAt(input, 0, 0)
+
+	if expected != actual {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
