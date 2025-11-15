@@ -80,6 +80,21 @@ func parsePages(src string) ([]int, error) {
 	return pages, nil
 }
 
+func buildOrderingMap(rules []Ordering) map[int]map[int]struct{} {
+	orderingMap := make(map[int]map[int]struct{})
+	for _, rule := range rules {
+		afters, ok := orderingMap[rule.before]
+		if !ok {
+			afters = make(map[int]struct{})
+			orderingMap[rule.before] = afters
+		}
+
+		afters[rule.after] = struct{}{}
+	}
+
+	return orderingMap
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must provide an input file\n")

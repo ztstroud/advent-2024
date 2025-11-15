@@ -111,3 +111,23 @@ func TestParsePagesInvalid(t *testing.T) {
 	}
 }
 
+func TestBuildOrderingMap(t *testing.T) {
+	rules := []Ordering{
+		{ before: 16, after: 13 },
+		{ before: 16, after: 21 },
+		{ before: 29, after: 13 },
+		{ before: 61, after: 29 },
+	}
+
+	actual := buildOrderingMap(rules)
+	expected := map[int]map[int]struct{}{
+		16: { 13: struct{}{}, 21: struct{}{} },
+		29: { 13: struct{}{} },
+		61: { 29: struct{}{} },
+	}
+
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
