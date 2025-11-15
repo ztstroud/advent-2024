@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -95,6 +96,28 @@ func buildOrderingMap(rules []Ordering) OrderingMap {
 	}
 
 	return orderingMap
+}
+
+func sortPages(pages []int, ordering OrderingMap) {
+	slices.SortFunc(pages, func(l, r int) int {
+		afterLs, ok := ordering[l]
+		if ok {
+			_, rAfterL := afterLs[r]
+			if rAfterL {
+				return -1
+			}
+		}
+
+		afterRs, ok := ordering[r]
+		if ok {
+			_, lAfterR := afterRs[l]
+			if lAfterR {
+				return 1
+			}
+		}
+
+		return 0
+	})
 }
 
 func main() {

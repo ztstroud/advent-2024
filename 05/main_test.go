@@ -131,3 +131,20 @@ func TestBuildOrderingMap(t *testing.T) {
 	}
 }
 
+func TestSortPages(t *testing.T) {
+	pages := []int{ 61, 13, 29 }
+	orderingMap := OrderingMap{
+		16: { 13: struct{}{} },
+		29: { 13: struct{}{} },
+		61: { 29: struct{}{} },
+	}
+
+	sortPages(pages, orderingMap)
+	actual := pages
+	expected := []int{ 61, 29, 13 }
+
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
