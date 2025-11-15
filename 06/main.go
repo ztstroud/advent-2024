@@ -32,3 +32,15 @@ func parseField(src []string) (Field, Position) {
 	return field, pos
 }
 
+func inBounds(field Field, pos Position) bool {
+	if pos.y < 0 || pos.y >= len(field) {
+		return false
+	}
+
+	if pos.x < 0 || pos.x >= len(field[pos.y]) {
+		return false
+	}
+
+	return true
+}
+

@@ -30,3 +30,43 @@ func TestParseField(t *testing.T) {
 	}
 }
 
+func TestInBounds(t *testing.T) {
+	field := Field{
+		{ WALL,  EMPTY, EMPTY },
+		{ EMPTY, EMPTY, WALL },
+		{ EMPTY, WALL,  EMPTY },
+	}
+
+	pos := Position{ x: 1, y: 1 }
+
+	if !inBounds(field, pos) {
+		t.Errorf("Expected %v to be out of bounds", pos)
+	}
+}
+
+func TestInBoundsOutOfBounds(t *testing.T) {
+	field := Field{
+		{ WALL,  EMPTY, EMPTY },
+		{ EMPTY, EMPTY, WALL },
+		{ EMPTY, WALL,  EMPTY },
+	}
+
+	cases := []struct{
+		name string
+		pos Position
+	}{
+		{ name: "BeforeY", pos: Position{ y: -1 } },
+		{ name: "AfterY", pos: Position{ y: 3 } },
+		{ name: "BeforeX", pos: Position{ x: -1 } },
+		{ name: "AfterX", pos: Position{ x: 3 } },
+	}
+
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			if inBounds(field, testCase.pos) {
+				t.Errorf("Expected %v to be out of bounds", testCase.pos)
+			}
+		})
+	}
+}
+
