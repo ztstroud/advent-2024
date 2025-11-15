@@ -7,6 +7,13 @@ const WALL byte = 2
 type Field [][]byte
 type Position struct { x, y int }
 
+func (pos Position) add(other Position) Position {
+	return Position{
+		x: pos.x + other.x,
+		y: pos.y + other.y,
+	}
+}
+
 /*
 Parse the string source into a field and starting position
 

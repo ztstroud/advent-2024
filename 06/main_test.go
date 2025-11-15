@@ -5,6 +5,15 @@ import (
 	"testing"
 )
 
+func TestPositionAdd(t *testing.T) {
+	sum := Position{1, 2}.add(Position{3, 4})
+	expected := Position{4, 6}
+
+	if expected != sum {
+		t.Errorf("Expected %v to be %v", sum, expected)
+	}
+}
+
 func TestParseField(t *testing.T) {
 	input := []string{
 		"#..",
