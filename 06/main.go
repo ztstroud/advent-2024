@@ -1,5 +1,12 @@
 package main
 
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+)
+
 const EMPTY byte = 0
 const VISITED byte = 1
 const WALL byte = 2
@@ -110,5 +117,31 @@ func countMatching(field Field, query byte) int {
 	}
 
 	return sum
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input file\n")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Failed to read file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	fieldSrc := make([]string, 0)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fieldSrc = append(fieldSrc, scanner.Text())
+	}
+
+	field, pos := parseField(fieldSrc)
+	simulate(field, pos)
+
+	visitedCount := countMatching(field, VISITED)
+	fmt.Printf("Visited %d unique spaces\n", visitedCount)
 }
 
