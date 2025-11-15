@@ -150,7 +150,11 @@ func main() {
 		rules = append(rules, ordering)
 	}
 
+	orderingMap := buildOrderingMap(rules)
+
 	sum := 0
+	sortedSum := 0
+
 	for scanner.Scan() {
 		pagesSrc := scanner.Text()
 
@@ -161,9 +165,13 @@ func main() {
 
 		if validate(pages, rules) {
 			sum += pages[len(pages) / 2]
+		} else {
+			sortPages(pages, orderingMap)
+			sortedSum += pages[len(pages) / 2]
 		}
 	}
 
 	fmt.Printf("Sum of middle pages of valid updates: %d\n", sum)
+	fmt.Printf("Sum of middle pages of sorted invalid updates: %d\n", sortedSum)
 }
 
