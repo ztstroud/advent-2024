@@ -142,3 +142,18 @@ func TestSimulate(t *testing.T) {
 	}
 }
 
+func TestCountMatching(t *testing.T) {
+	field := Field{
+		{ WALL,    EMPTY,   EMPTY },
+		{ VISITED, VISITED, WALL },
+		{ VISITED, WALL,    EMPTY },
+	}
+
+	actual := countMatching(field, VISITED)
+	expected := 3
+
+	if expected != actual {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+

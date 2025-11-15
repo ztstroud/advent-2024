@@ -96,3 +96,19 @@ func simulate(field Field, pos Position) {
 	}
 }
 
+/*
+Count the number of occurrences of the given query in the given field
+*/
+func countMatching(field Field, query byte) int {
+	sum := 0
+	for _, row := range field {
+		for _, val := range row {
+			if val == query {
+				sum += 1
+			}
+		}
+	}
+
+	return sum
+}
+
