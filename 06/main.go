@@ -64,3 +64,35 @@ func wallAt(field Field, pos Position) bool {
 	return field[pos.y][pos.x] == WALL
 }
 
+/*
+Simulate the walk of a robot starting at the given position facing up
+
+This assumes that the robot will eventually walk off the map. If that is not
+true, this function will loop forever. This could be fixed by keeping track of
+positions visited and the direction that was being faced. If the same state is
+entered, the robot is stuck in a loop.
+*/
+func simulate(field Field, pos Position) {
+	DIRS := []Position{
+		{ x: 0, y: -1 },
+		{ x: 1, y: 0 },
+		{ x: 0, y: 1 },
+		{ x: -1, y: 0 },
+	}
+
+	dir := 0
+	for inBounds(field, pos) {
+		newPos := pos.add(DIRS[dir])
+
+		if wallAt(field, newPos) {
+			dir += 1
+			if dir >= len(DIRS) {
+				dir = 0
+			}
+		} else {
+			field[pos.y][pos.x] = VISITED
+			pos = newPos
+		}
+	}
+}
+

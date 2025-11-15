@@ -121,3 +121,24 @@ func TestWallAtOutOfBounds(t *testing.T) {
 	}
 }
 
+func TestSimulate(t *testing.T) {
+	field := Field{
+		{ WALL,  EMPTY, EMPTY },
+		{ EMPTY, EMPTY, WALL },
+		{ EMPTY, WALL,  EMPTY },
+	}
+
+	pos := Position{0, 2}
+	simulate(field, pos)
+
+	expected := Field{
+		{ WALL,    EMPTY,   EMPTY },
+		{ VISITED, VISITED, WALL },
+		{ VISITED, WALL,    EMPTY },
+	}
+
+	if !reflect.DeepEqual(expected, field) {
+		t.Errorf("Expected %v to be %v", field, expected)
+	}
+}
+
