@@ -7,21 +7,19 @@ import (
 
 func TestParseField(t *testing.T) {
 	input := []string{
-		".#...",
-		"....#",
-		"....#",
-		".^.#.",
+		"#..",
+		"..#",
+		"^#.",
 	}
 
 	field, pos := parseField(input)
 
 	expectedField := Field{
-		{ EMPTY, WALL,  EMPTY, EMPTY, EMPTY },
-		{ EMPTY, EMPTY, EMPTY, EMPTY, WALL },
-		{ EMPTY, EMPTY, EMPTY, EMPTY, WALL },
-		{ EMPTY, EMPTY, EMPTY, WALL,  EMPTY },
+		{ WALL,  EMPTY, EMPTY },
+		{ EMPTY, EMPTY, WALL },
+		{ EMPTY, WALL,  EMPTY },
 	}
-	expectedPos := Position{ x: 1, y: 3 }
+	expectedPos := Position{ x: 0, y: 2 }
 
 	if !reflect.DeepEqual(expectedField, field) {
 		t.Errorf("Expected %v to be %v", field, expectedField)
