@@ -120,7 +120,7 @@ func TestBuildOrderingMap(t *testing.T) {
 	}
 
 	actual := buildOrderingMap(rules)
-	expected := map[int]map[int]struct{}{
+	expected := OrderingMap{
 		16: { 13: struct{}{}, 21: struct{}{} },
 		29: { 13: struct{}{} },
 		61: { 29: struct{}{} },

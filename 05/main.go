@@ -80,7 +80,9 @@ func parsePages(src string) ([]int, error) {
 	return pages, nil
 }
 
-func buildOrderingMap(rules []Ordering) map[int]map[int]struct{} {
+type OrderingMap map[int]map[int]struct{}
+
+func buildOrderingMap(rules []Ordering) OrderingMap {
 	orderingMap := make(map[int]map[int]struct{})
 	for _, rule := range rules {
 		afters, ok := orderingMap[rule.before]
