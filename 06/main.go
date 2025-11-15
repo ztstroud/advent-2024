@@ -44,3 +44,11 @@ func inBounds(field Field, pos Position) bool {
 	return true
 }
 
+func wallAt(field Field, pos Position) bool {
+	if !inBounds(field, pos) {
+		return false
+	}
+
+	return field[pos.y][pos.x] == WALL
+}
+

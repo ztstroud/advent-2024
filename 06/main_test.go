@@ -70,3 +70,45 @@ func TestInBoundsOutOfBounds(t *testing.T) {
 	}
 }
 
+func TestWallAtWithWall(t *testing.T) {
+	field := Field{
+		{ WALL,  EMPTY, EMPTY },
+		{ EMPTY, EMPTY, WALL },
+		{ EMPTY, WALL,  EMPTY },
+	}
+
+	pos := Position{ x: 2, y: 1 }
+
+	if !wallAt(field, pos) {
+		t.Errorf("Missed wall at %v", pos)
+	}
+}
+
+func TestWallAtNoWall(t *testing.T) {
+	field := Field{
+		{ WALL,  EMPTY, EMPTY },
+		{ EMPTY, EMPTY, WALL },
+		{ EMPTY, WALL,  EMPTY },
+	}
+
+	pos := Position{ x: 2, y: 2 }
+
+	if wallAt(field, pos) {
+		t.Errorf("Mistaken wall at %v", pos)
+	}
+}
+
+func TestWallAtOutOfBounds(t *testing.T) {
+	field := Field{
+		{ WALL,  EMPTY, EMPTY },
+		{ EMPTY, EMPTY, WALL },
+		{ EMPTY, WALL,  EMPTY },
+	}
+
+	pos := Position{ x: 3, y: 2 }
+
+	if wallAt(field, pos) {
+		t.Errorf("Mistaken wall at %v", pos)
+	}
+}
+
