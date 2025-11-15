@@ -22,7 +22,7 @@ func parseField(src []string) (Field, Position) {
 		for x, char := range row {
 			switch char {
 			case '#':
-				field[y][x] = 2
+				field[y][x] = WALL
 			case '^':
 				pos = Position{ x: x, y: y }
 			}
@@ -44,6 +44,11 @@ func inBounds(field Field, pos Position) bool {
 	return true
 }
 
+/*
+Check if there is a wall at a given position
+
+If the position is out of bounds, it is considered empty.
+*/
 func wallAt(field Field, pos Position) bool {
 	if !inBounds(field, pos) {
 		return false
