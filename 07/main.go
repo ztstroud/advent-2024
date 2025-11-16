@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -30,6 +31,10 @@ func parseEquation(src string) (int, []int, error) {
 	}
 
 	return testValue, values, nil
+}
+
+func digitsIn(v int) int {
+	return int(math.Log10(float64(v))) + 1
 }
 
 func isSolvableRecursive(testValue, current int, values []int) bool {

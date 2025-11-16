@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -21,6 +22,28 @@ func TestParseEquation(t *testing.T) {
 
 	if !reflect.DeepEqual(values, expectedValues) {
 		t.Errorf("Expected %v to be %v", values, expectedValues)
+	}
+}
+
+func TestDigitsIn(t *testing.T) {
+	cases := []struct{ val, digits int }{
+		{ 1, 1 },
+		{ 9, 1 },
+		{ 10, 2 },
+		{ 99, 2 },
+		{ 100, 3 },
+		{ 999, 3 },
+		{ 1000, 4 },
+		{ 9999, 4 },
+	}
+
+	for _, c := range cases {
+		t.Run(fmt.Sprintf("%d", c.val), func(t *testing.T) {
+			digits := digitsIn(c.val)
+			if digits != c.digits {
+				t.Errorf("Expected %v to be %v", digits, c.digits)
+			}
+		})
 	}
 }
 
