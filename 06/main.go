@@ -166,5 +166,32 @@ func main() {
 
 	visitedCount := countMatching(field, VISITED)
 	fmt.Printf("Visited %d unique spaces\n", visitedCount)
+
+	// At this point, I stop caring about what is and isn't visited. The
+	// simulation will be run multiple times and I start setting values back
+	// to empty, and its okay.
+
+	possibleBlocks := 0
+	for y := range field {
+		for x := range field[y] {
+			// blocking the origin is disallowed by the problem statement
+			if x == pos.x && y == pos.y {
+				continue
+			}
+
+			if field[y][x] == WALL {
+				continue
+			}
+
+			field[y][x] = WALL
+			if !simulate(field, pos) {
+				possibleBlocks += 1
+			}
+
+			field[y][x] = EMPTY
+		}
+	}
+
+	fmt.Printf("%d possible blocking placements\n", possibleBlocks)
 }
 
