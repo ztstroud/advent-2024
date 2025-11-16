@@ -80,3 +80,11 @@ have already been discovered.
 This also means that you will never try the same tile twice, as you always move
 into the spot where you simulated placing a wall.
 
+## New Approach
+
+After putting a lot of time into the above approach, I think it is going in the
+wrong direction. It keep spiraling in complexity, so I am going to implement a
+simpler more brute force algorithm that just tries blocking every space. I also
+think I might be able to collect candidates then then execute a smaller number
+of simulations.
+
