@@ -1,6 +1,10 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -46,5 +50,36 @@ func isSolvable(testValue int, values []int) bool {
 	}
 
 	return isSolvableRecursive(testValue, values[0], values[1:])
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalln("Must provide an input file")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Failed to open file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	sum := 0
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		src := scanner.Text()
+
+		testValue, values, err := parseEquation(src)
+		if err != nil {
+			log.Fatalf("Failed to parse equation: %s\n%v\n", src, err)
+		}
+
+		slv := isSolvable(testValue, values)
+		if slv {
+			sum += testValue
+		}
+	}
+
+	fmt.Printf("Sum of solvable equations: %d\n", sum)
 }
 
