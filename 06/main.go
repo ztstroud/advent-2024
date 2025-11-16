@@ -119,15 +119,15 @@ func simulate(field Field, pos Position) int {
 
 	// Each loop represents the action of _entering_ the cell at pos
 	for inBounds(field, pos) {
-		rotatedDir := dir + 1
-		if rotatedDir >= len(DIRS) {
-			rotatedDir = 0
-		}
-
 		newDir := getNextDir(field, pos, dir)
 		newPos := pos.add(DIRS[newDir])
 
 		if field[pos.y][pos.x] == VISITED {
+			rotatedDir := dir + 1
+			if rotatedDir >= len(DIRS) {
+				rotatedDir = 0
+			}
+
 			if visitDirs[pos.y][pos.x] == rotatedDir && inBounds(field, newPos) {
 				loopCount += 1
 			}
