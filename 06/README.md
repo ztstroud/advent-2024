@@ -88,3 +88,23 @@ simpler more brute force algorithm that just tries blocking every space. I also
 think I might be able to collect candidates then then execute a smaller number
 of simulations.
 
+## Conclusion
+
+The brute force solution worked, but it is a bit slow as you might expect. I was
+making it more complicated than it is. meetsOldPath is almost correct, but I
+would need to copy the direction info so that it can keep updating. Looking only
+for the path up to the branch point is insufficient, as shown in the following:
+
+```
+1..#.
+....#
+..#..
+^..#.
+```
+
+You will never hit the path before the branch, but will be caught in a loop.
+
+This approach would give two things:
+- Limit how many wall you attempt to place
+- Don't re-run the start of the simulation for every wall placed
+
