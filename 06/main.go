@@ -127,11 +127,14 @@ func simulate(field Field, pos Position) int {
 		newDir := getNextDir(field, pos, dir)
 		newPos := pos.add(DIRS[newDir])
 
-		if field[pos.y][pos.x] == VISITED {
-			if visitDirs[pos.y][pos.x] == rotateDir(dir) && inBounds(field, newPos) {
-				loopCount += 1
-			}
-		} else {
+		couldRotateToMatch := field[pos.y][pos.x] == VISITED &&
+			visitDirs[pos.y][pos.x] == rotateDir(dir)
+
+		if couldRotateToMatch && inBounds(field, newPos) {
+			loopCount += 1
+		}
+
+		if field[pos.y][pos.x] == EMPTY {
 			field[pos.y][pos.x] = VISITED
 			visitDirs[pos.y][pos.x] = dir
 		}
