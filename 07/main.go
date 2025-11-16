@@ -58,7 +58,8 @@ func isSolvableRecursive(testValue, current int, values []int) bool {
 	nextValues := values[1:]
 
 	return isSolvableRecursive(testValue, current + value, nextValues) ||
-		isSolvableRecursive(testValue, current * value, nextValues)
+		isSolvableRecursive(testValue, current * value, nextValues) ||
+		isSolvableRecursive(testValue, concat(current, value), nextValues)
 }
 
 func isSolvable(testValue int, values []int) bool {
