@@ -83,7 +83,7 @@ true, this function will loop forever. This could be fixed by keeping track of
 positions visited and the direction that was being faced. If the same state is
 entered, the robot is stuck in a loop.
 */
-func simulate(field Field, pos Position) {
+func simulate(field Field, pos Position) int {
 	DIRS := []Position{
 		{ x: 0, y: -1 },
 		{ x: 1, y: 0 },
@@ -91,20 +91,38 @@ func simulate(field Field, pos Position) {
 		{ x: -1, y: 0 },
 	}
 
+	// A visitDir is valid iff the corresponding field entry is visited
+	visitDirs := make([][]int, len(field))
+	for y, row := range field {
+		visitDirs[y] = make([]int, len(row))
+	}
+
+	loopCount := 0
+
 	dir := 0
 	for inBounds(field, pos) {
 		newPos := pos.add(DIRS[dir])
+		newDir := dir + 1
+		if newDir >= len(DIRS) {
+			newDir = 0
+		}
 
 		if wallAt(field, newPos) {
-			dir += 1
-			if dir >= len(DIRS) {
-				dir = 0
-			}
+			dir = newDir
 		} else {
+			if field[pos.y][pos.x] == VISITED && visitDirs[pos.y][pos.x] == newDir {
+				loopCount += 1
+			}
+
+
 			field[pos.y][pos.x] = VISITED
+			visitDirs[pos.y][pos.x] = dir
+
 			pos = newPos
 		}
 	}
+
+	return loopCount
 }
 
 /*

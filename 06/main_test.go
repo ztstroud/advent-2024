@@ -150,16 +150,38 @@ func TestSimulate(t *testing.T) {
 	}
 
 	pos := Position{0, 2}
-	simulate(field, pos)
+	loopCount := simulate(field, pos)
 
 	expected := Field{
 		{ WALL,    EMPTY,   EMPTY },
 		{ VISITED, VISITED, WALL },
 		{ VISITED, WALL,    EMPTY },
 	}
+	expectedLoopCount := 0
 
 	if !reflect.DeepEqual(expected, field) {
 		t.Errorf("Expected %v to be %v", field, expected)
+	}
+
+	if loopCount != expectedLoopCount {
+		t.Errorf("Expected %v to be %v", loopCount, expectedLoopCount)
+	}
+}
+
+func TestSimulateLoopSimpleCross(t *testing.T) {
+	field, pos := parseField([]string{
+		".#...",
+		".+-+#",
+		".|.|.",
+		"1+-+.",
+		".^.#.",
+	})
+
+	loopCount := simulate(field, pos)
+	expectedLoopCount := 1
+
+	if loopCount != expectedLoopCount {
+		t.Errorf("Expected %v to be %v", loopCount, expectedLoopCount)
 	}
 }
 
