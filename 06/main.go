@@ -132,7 +132,7 @@ func simulate(field Field, pos Position) int {
 			}
 		} else {
 			field[pos.y][pos.x] = VISITED
-			visitDirs[pos.y][pos.x] = newDir
+			visitDirs[pos.y][pos.x] = dir
 		}
 
 		pos = newPos

@@ -184,6 +184,21 @@ func TestSimulateLoopSimpleCross(t *testing.T) {
 	}
 }
 
+func TestSimulateDoubleReverse(t *testing.T) {
+	field, pos := parseField([]string{
+		".#..",
+		"...#",
+		".^#.",
+	})
+
+	loopCount := simulate(field, pos)
+	expectedLoopCount := 1
+
+	if loopCount != expectedLoopCount {
+		t.Errorf("Expected %v to be %v", loopCount, expectedLoopCount)
+	}
+}
+
 func TestCountMatching(t *testing.T) {
 	field := Field{
 		{ WALL,    EMPTY,   EMPTY },
