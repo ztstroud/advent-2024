@@ -199,6 +199,25 @@ func TestSimulateDoubleReverse(t *testing.T) {
 	}
 }
 
+func TestSimulateSeparateLoops(t *testing.T) {
+	field, pos := parseField([]string{
+		"..#......",
+		"..+--+#..",
+		"#.1..|...",
+		"+-+--+-+#",
+		"|.|..|.|.",
+		"|#+--+-+.",
+		"^....2.#.",
+	})
+
+	loopCount := simulate(field, pos)
+	expectedLoopCount := 2
+
+	if loopCount != expectedLoopCount {
+		t.Errorf("Expected %v to be %v", loopCount, expectedLoopCount)
+	}
+}
+
 func TestCountMatching(t *testing.T) {
 	field := Field{
 		{ WALL,    EMPTY,   EMPTY },
