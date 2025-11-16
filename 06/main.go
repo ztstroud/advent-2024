@@ -98,28 +98,45 @@ func simulate(field Field, pos Position) int {
 	}
 
 	loopCount := 0
-
 	dir := 0
+
+	// Each loop represents the action of _entering_ the cell at pos
 	for inBounds(field, pos) {
-		newPos := pos.add(DIRS[dir])
-		newDir := dir + 1
-		if newDir >= len(DIRS) {
-			newDir = 0
+		newDir := dir
+		newPos := pos.add(DIRS[newDir])
+
+		rotatedDir := dir + 1
+		if rotatedDir >= len(DIRS) {
+			rotatedDir = 0
 		}
 
 		if wallAt(field, newPos) {
-			dir = newDir
-		} else {
-			if field[pos.y][pos.x] == VISITED && visitDirs[pos.y][pos.x] == newDir {
+			newDir = rotatedDir
+			newPos = pos.add(DIRS[newDir])
+
+			// We only ever have to turn twice, otherwise we must have passed
+			// through a wall, which isn't possible
+			if wallAt(field, newPos) {
+				newDir += 1
+				if newDir >= len(DIRS) {
+					newDir = 0
+				}
+
+				newPos = pos.add(DIRS[newDir])
+			}
+		}
+
+		if field[pos.y][pos.x] == VISITED {
+			if visitDirs[pos.y][pos.x] == rotatedDir && inBounds(field, newPos) {
 				loopCount += 1
 			}
-
-
+		} else {
 			field[pos.y][pos.x] = VISITED
-			visitDirs[pos.y][pos.x] = dir
-
-			pos = newPos
+			visitDirs[pos.y][pos.x] = newDir
 		}
+
+		pos = newPos
+		dir = newDir
 	}
 
 	return loopCount

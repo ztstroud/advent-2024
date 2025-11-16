@@ -143,13 +143,12 @@ func TestWallAtOutOfBounds(t *testing.T) {
 }
 
 func TestSimulate(t *testing.T) {
-	field := Field{
-		{ WALL,  EMPTY, EMPTY },
-		{ EMPTY, EMPTY, WALL },
-		{ EMPTY, WALL,  EMPTY },
-	}
+	field, pos := parseField([]string{
+		"#..",
+		"..#",
+		"^#.",
+	})
 
-	pos := Position{0, 2}
 	loopCount := simulate(field, pos)
 
 	expected := Field{
