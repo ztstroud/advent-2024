@@ -82,17 +82,22 @@ var DIRS = []Position{
 	{ x: -1, y: 0 },
 }
 
+func rotateDir(dir int) int {
+	dir += 1
+	if dir >= len(DIRS) {
+		dir = 0
+	}
+
+	return dir
+}
+
 func getNextDir(field Field, pos Position, dir int) int {
 	nextPos := pos.add(DIRS[dir])
 
 	// We only ever have to turn twice, otherwise we must have passed through a
 	// wall, which isn't possible
 	for i := 0; i < 2 && wallAt(field, nextPos); i++ {
-		dir += 1
-		if dir >= len(DIRS) {
-			dir = 0
-		}
-
+		dir = rotateDir(dir)
 		nextPos = pos.add(DIRS[dir])
 	}
 
@@ -123,12 +128,7 @@ func simulate(field Field, pos Position) int {
 		newPos := pos.add(DIRS[newDir])
 
 		if field[pos.y][pos.x] == VISITED {
-			rotatedDir := dir + 1
-			if rotatedDir >= len(DIRS) {
-				rotatedDir = 0
-			}
-
-			if visitDirs[pos.y][pos.x] == rotatedDir && inBounds(field, newPos) {
+			if visitDirs[pos.y][pos.x] == rotateDir(dir) && inBounds(field, newPos) {
 				loopCount += 1
 			}
 		} else {
