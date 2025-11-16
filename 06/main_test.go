@@ -143,14 +143,13 @@ func TestWallAtOutOfBounds(t *testing.T) {
 }
 
 func TestSimulate(t *testing.T) {
-	field := Field{
-		{ WALL,  EMPTY, EMPTY },
-		{ EMPTY, EMPTY, WALL },
-		{ EMPTY, WALL,  EMPTY },
-	}
+	field, pos := parseField([]string{
+		"#..",
+		"..#",
+		"^#.",
+	})
 
-	pos := Position{0, 2}
-	simulate(field, pos)
+	walksOff := simulate(field, pos)
 
 	expected := Field{
 		{ WALL,    EMPTY,   EMPTY },
@@ -160,6 +159,25 @@ func TestSimulate(t *testing.T) {
 
 	if !reflect.DeepEqual(expected, field) {
 		t.Errorf("Expected %v to be %v", field, expected)
+	}
+
+	if !walksOff {
+		t.Errorf("Expected %v to be true", walksOff)
+	}
+}
+
+func TestSimulateWalkOffLoop(t *testing.T) {
+	field, pos := parseField([]string{
+		".#..",
+		"#..#",
+		".^#.",
+	})
+
+	walksOff := simulate(field, pos)
+	expected := false
+
+	if walksOff != expected {
+		t.Errorf("Expected %v to be %v", walksOff, expected)
 	}
 }
 

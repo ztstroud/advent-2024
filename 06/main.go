@@ -78,12 +78,10 @@ func wallAt(field Field, pos Position) bool {
 /*
 Simulate the walk of a robot starting at the given position facing up
 
-This assumes that the robot will eventually walk off the map. If that is not
-true, this function will loop forever. This could be fixed by keeping track of
-positions visited and the direction that was being faced. If the same state is
-entered, the robot is stuck in a loop.
+Returns true iff the robot walks off the map. If the robot gets stuck in a loop,
+it will not walk off the map and false will be returned.
 */
-func simulate(field Field, pos Position) {
+func simulate(field Field, pos Position) bool {
 	DIRS := []Position{
 		{ x: 0, y: -1 },
 		{ x: 1, y: 0 },
@@ -91,10 +89,23 @@ func simulate(field Field, pos Position) {
 		{ x: -1, y: 0 },
 	}
 
+	enteredFrom := make([][][]bool, len(field))
+	for y := range enteredFrom {
+		enteredFrom[y] = make([][]bool, len(field[y]))
+		for x := range enteredFrom[y] {
+			enteredFrom[y][x] = make([]bool, len(DIRS))
+		}
+	}
+
 	dir := 0
 	
 	// Each iteration represents entering the cell at pos facing dir
 	for inBounds(field, pos) {
+		if enteredFrom[pos.y][pos.x][dir] {
+			return false
+		}
+
+		enteredFrom[pos.y][pos.x][dir] = true
 		newPos := pos.add(DIRS[dir])
 
 		// We will only ever have to turn twice. You just came from the cell you
@@ -111,6 +122,8 @@ func simulate(field Field, pos Position) {
 		field[pos.y][pos.x] = VISITED
 		pos = newPos
 	}
+
+	return true
 }
 
 /*
