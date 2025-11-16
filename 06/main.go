@@ -75,6 +75,30 @@ func wallAt(field Field, pos Position) bool {
 	return field[pos.y][pos.x] == WALL
 }
 
+var DIRS = []Position{
+	{ x: 0, y: -1 },
+	{ x: 1, y: 0 },
+	{ x: 0, y: 1 },
+	{ x: -1, y: 0 },
+}
+
+func getNextDir(field Field, pos Position, dir int) int {
+	nextPos := pos.add(DIRS[dir])
+
+	// We only ever have to turn twice, otherwise we must have passed through a
+	// wall, which isn't possible
+	for i := 0; i < 2 && wallAt(field, nextPos); i++ {
+		dir += 1
+		if dir >= len(DIRS) {
+			dir = 0
+		}
+
+		nextPos = pos.add(DIRS[dir])
+	}
+
+	return dir
+}
+
 /*
 Simulate the walk of a robot starting at the given position facing up
 
@@ -84,13 +108,6 @@ positions visited and the direction that was being faced. If the same state is
 entered, the robot is stuck in a loop.
 */
 func simulate(field Field, pos Position) int {
-	DIRS := []Position{
-		{ x: 0, y: -1 },
-		{ x: 1, y: 0 },
-		{ x: 0, y: 1 },
-		{ x: -1, y: 0 },
-	}
-
 	// A visitDir is valid iff the corresponding field entry is visited
 	visitDirs := make([][]int, len(field))
 	for y, row := range field {
@@ -102,29 +119,13 @@ func simulate(field Field, pos Position) int {
 
 	// Each loop represents the action of _entering_ the cell at pos
 	for inBounds(field, pos) {
-		newDir := dir
-		newPos := pos.add(DIRS[newDir])
-
 		rotatedDir := dir + 1
 		if rotatedDir >= len(DIRS) {
 			rotatedDir = 0
 		}
 
-		if wallAt(field, newPos) {
-			newDir = rotatedDir
-			newPos = pos.add(DIRS[newDir])
-
-			// We only ever have to turn twice, otherwise we must have passed
-			// through a wall, which isn't possible
-			if wallAt(field, newPos) {
-				newDir += 1
-				if newDir >= len(DIRS) {
-					newDir = 0
-				}
-
-				newPos = pos.add(DIRS[newDir])
-			}
-		}
+		newDir := getNextDir(field, pos, dir)
+		newPos := pos.add(DIRS[newDir])
 
 		if field[pos.y][pos.x] == VISITED {
 			if visitDirs[pos.y][pos.x] == rotatedDir && inBounds(field, newPos) {
