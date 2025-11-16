@@ -28,3 +28,23 @@ func parseEquation(src string) (int, []int, error) {
 	return testValue, values, nil
 }
 
+func isSolvableRecursive(testValue, current int, values []int) bool {
+	if len(values) == 0 {
+		return testValue == current
+	}
+
+	value := values[0]
+	nextValues := values[1:]
+
+	return isSolvableRecursive(testValue, current + value, nextValues) ||
+		isSolvableRecursive(testValue, current * value, nextValues)
+}
+
+func isSolvable(testValue int, values []int) bool {
+	if len(values) == 0 {
+		return false
+	}
+
+	return isSolvableRecursive(testValue, values[0], values[1:])
+}
+
