@@ -127,10 +127,10 @@ func simulate(field Field, pos Position) int {
 		newDir := getNextDir(field, pos, dir)
 		newPos := pos.add(DIRS[newDir])
 
-		couldRotateToMatch := field[pos.y][pos.x] == VISITED &&
-			visitDirs[pos.y][pos.x] == rotateDir(dir)
+		newPosInBounds := inBounds(field, newPos)
 
-		if couldRotateToMatch && inBounds(field, newPos) {
+		if newPosInBounds && meetsOldPath(field, pos, rotateDir(newDir), visitDirs) {
+			//fmt.Printf("Can place at %v\n", newPos)
 			loopCount += 1
 		}
 
@@ -144,6 +144,28 @@ func simulate(field Field, pos Position) int {
 	}
 
 	return loopCount
+}
+
+/*
+Checks if the robot would get on the same path at some point in the future
+
+This does not just mean hitting the same cell, but in the same direction as
+well. In this case, the robot loops without needing to place any object.
+*/
+func meetsOldPath(field Field, pos Position, dir int, visitDirs [][]int) bool {
+	for inBounds(field, pos) {
+		newDir := getNextDir(field, pos, dir)
+		newPos := pos.add(DIRS[newDir])
+
+		if field[pos.y][pos.x] == VISITED && visitDirs[pos.y][pos.x] == dir {
+			return true
+		}
+
+		pos = newPos
+		dir = newDir
+	}
+
+	return false
 }
 
 /*
