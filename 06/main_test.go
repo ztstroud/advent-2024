@@ -235,6 +235,25 @@ func TestSimulateUnvisited(t *testing.T) {
 	}
 }
 
+func TestSimulateXXX(t *testing.T) {
+	field, pos := parseField([]string{
+		".#.......",
+		".+---+#..",
+		".3.#.|...",
+		"#+-+-+-+#",
+		".|.|.1.|.",
+		"#+2+-+-+.",
+		"...^.4.#.",
+	})
+
+	loopCount := simulate(field, pos)
+	expectedLoopCount := 4
+
+	if loopCount != expectedLoopCount {
+		t.Errorf("Expected %v to be %v", loopCount, expectedLoopCount)
+	}
+}
+
 func TestCountMatching(t *testing.T) {
 	field := Field{
 		{ WALL,    EMPTY,   EMPTY },
