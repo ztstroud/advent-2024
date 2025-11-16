@@ -47,6 +47,24 @@ func TestDigitsIn(t *testing.T) {
 	}
 }
 
+func TestConcat(t *testing.T) {
+	cases := []struct{ a, b, concated int }{
+		{ 2, 8, 28 },
+		{ 10, 37, 1037 },
+		{ 8, 101, 8101 },
+		{ 743, 395, 743395 },
+	}
+
+	for _, c := range cases {
+		t.Run(fmt.Sprintf("%d || %d", c.a, c.b), func(t *testing.T) {
+			concated := concat(c.a, c.b)
+			if concated != c.concated {
+				t.Errorf("Expected %v to be %v", concated, c.concated)
+			}
+		})
+	}
+}
+
 func TestSolveable(t *testing.T) {
 	cases := []struct{
 		src string

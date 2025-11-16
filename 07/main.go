@@ -37,6 +37,18 @@ func digitsIn(v int) int {
 	return int(math.Log10(float64(v))) + 1
 }
 
+/*
+Combine two number by placing the digits side by side
+
+For example:
+	concat(2, 8) == 28
+	concat(10, 37) == 1037
+	concat(8, 101) == 8101
+*/
+func concat(a, b int) int {
+	return a * int(math.Pow10(digitsIn(b))) + b
+}
+
 func isSolvableRecursive(testValue, current int, values []int) bool {
 	if len(values) == 0 {
 		return testValue == current
