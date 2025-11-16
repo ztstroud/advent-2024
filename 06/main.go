@@ -25,6 +25,10 @@ func (pos Position) add(other Position) Position {
 Parse the string source into a field and starting position
 
 The starting position is NOT marked as visited
+
+Only the runes '#' and '^' are reserved, corresponding to a wall and the start
+position. All other runes are treated as empty space, enabling you to annotate
+the map.
 */
 func parseField(src []string) (Field, Position) {
 	pos := Position{}

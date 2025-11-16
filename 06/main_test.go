@@ -39,6 +39,27 @@ func TestParseField(t *testing.T) {
 	}
 }
 
+func TestParseFieldIgnoreInvalidRunes(t *testing.T) {
+	input := []string{
+		"^12+-|",
+	}
+
+	field, pos := parseField(input)
+
+	expectedField := Field{
+		{ EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
+	}
+	expectedPos := Position{ x: 0, y: 0 }
+
+	if !reflect.DeepEqual(expectedField, field) {
+		t.Errorf("Expected %v to be %v", field, expectedField)
+	}
+
+	if expectedPos != pos {
+		t.Errorf("Expected %v to be %v", pos, expectedPos)
+	}
+}
+
 func TestInBounds(t *testing.T) {
 	field := Field{
 		{ WALL,  EMPTY, EMPTY },
