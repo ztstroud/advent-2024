@@ -92,18 +92,24 @@ func simulate(field Field, pos Position) {
 	}
 
 	dir := 0
+	
+	// Each iteration represents entering the cell at pos facing dir
 	for inBounds(field, pos) {
 		newPos := pos.add(DIRS[dir])
 
-		if wallAt(field, newPos) {
+		// We will only ever have to turn twice. You just came from the cell you
+		// would be facing, so it must be empty.
+		for i := 0; i < 2 && wallAt(field, newPos); i++ {
 			dir += 1
 			if dir >= len(DIRS) {
 				dir = 0
 			}
-		} else {
-			field[pos.y][pos.x] = VISITED
-			pos = newPos
+
+			newPos = pos.add(DIRS[dir])
 		}
+
+		field[pos.y][pos.x] = VISITED
+		pos = newPos
 	}
 }
 
