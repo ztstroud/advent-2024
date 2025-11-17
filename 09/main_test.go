@@ -57,13 +57,25 @@ func TestExpandDiskMap(t *testing.T) {
 }
 
 func TestComputeChecksum(t *testing.T) {
-	diskMap := []int{ 1, 2, 3, 4, 5 }
-	actual := computeChecksumForUncompactedBlocks(expandDiskMap(diskMap))
-
-	expected := 98
-
-	if actual != expected {
-		t.Errorf("Expected %v to be %v", actual, expected)
+	cases := map[string]struct{
+		diskMap string
+		checksum int
+	}{
+		"GivenSmall": { "12345", 60 },
+		"GivenMedium": { "2333133121414131402", 1928 },
 	}
+
+	for _, c := range cases {
+		diskMap, err := parseDiskMap([]byte(c.diskMap))
+		if err != nil {
+			t.Errorf("Failed to parse disk map: %s (This is an error in the test)", c.diskMap)
+		}
+
+		actual := computeChecksumForUncompactedBlocks(expandDiskMap(diskMap))
+		if actual != c.checksum {
+			t.Errorf("Expected %v to be %v", actual, c.checksum)
+		}
+	}
+
 }
 

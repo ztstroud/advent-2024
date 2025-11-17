@@ -65,7 +65,7 @@ func computeChecksumForUncompactedBlocks(blocks []int) int {
 			end -= 1
 
 			for blocks[end] == -1 {
-				end += 1
+				end -= 1
 			}
 		} else {
 			checksum += start * blocks[start]
