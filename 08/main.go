@@ -1,5 +1,12 @@
 package main
 
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+)
+
 type City [][]byte
 type Position struct{ x, y int }
 type AntennaGroups map[byte][]Position
@@ -157,5 +164,32 @@ func countAntinodesHarmonic(city City) int {
 	}
 
 	return count
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must specify a file\n")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Failed to read file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	src := make([]string, 0)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		src = append(src, scanner.Text())
+	}
+
+	city := parseCity(src)
+	antinodeCount := countAntinodes(city)
+	harmonicAntinodeCount := countAntinodesHarmonic(city)
+
+	fmt.Printf("%d possible antinodes\n", antinodeCount)
+	fmt.Printf("%d possible harmonic antinodes\n", harmonicAntinodeCount)
 }
 
