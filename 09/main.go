@@ -1,5 +1,28 @@
 package main
 
+import (
+	"errors"
+	"fmt"
+)
+
+func parseDiskMap(src []byte) ([]int, error) {
+	diskMap := make([]int, 0, len(src))
+
+	for _, char := range src {
+		if char == '\n' {
+			continue
+		}
+
+		if char < '0' || char > '9' {
+			return nil, errors.New(fmt.Sprintf("'%c' is not a valid digit", char))
+		}
+
+		diskMap = append(diskMap, int(char - '0'))
+	}
+
+	return diskMap, nil
+}
+
 /*
 Expand a disk map into the memory it describes
 */
