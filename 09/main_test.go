@@ -66,16 +66,18 @@ func TestComputeChecksum(t *testing.T) {
 		"Endsfree": { "1342", 10 },
 	}
 
-	for _, c := range cases {
-		diskMap, err := parseDiskMap([]byte(c.diskMap))
-		if err != nil {
-			t.Errorf("Failed to parse disk map: %s (This is an error in the test)", c.diskMap)
-		}
+	for name, c := range cases {
+		t.Run(name, func(t *testing.T) {
+			diskMap, err := parseDiskMap([]byte(c.diskMap))
+			if err != nil {
+				t.Errorf("Failed to parse disk map: %s (This is an error in the test)", c.diskMap)
+			}
 
-		actual := computeChecksumForUncompactedBlocks(expandDiskMap(diskMap))
-		if actual != c.checksum {
-			t.Errorf("Expected %v to be %v", actual, c.checksum)
-		}
+			actual := computeChecksumForUncompactedBlocks(expandDiskMap(diskMap))
+			if actual != c.checksum {
+				t.Errorf("Expected %v to be %v", actual, c.checksum)
+			}
+		})
 	}
 
 }
