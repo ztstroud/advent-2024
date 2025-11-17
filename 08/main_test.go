@@ -47,3 +47,20 @@ func TestGetAntennaGroups(t *testing.T) {
 	}
 }
 
+func TestCountAntinodes(t *testing.T) {
+	input := []string{
+		"....",
+		".0..",
+		".0..",
+		"..A.",
+		"...A",
+	}
+
+	count := countAntinodes(parseCity(input))
+	expected := 3
+
+	if count != expected {
+		t.Errorf("Expected %v to be %v", count, expected)
+	}
+}
+
