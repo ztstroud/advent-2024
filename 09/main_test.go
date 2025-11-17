@@ -63,6 +63,7 @@ func TestComputeChecksum(t *testing.T) {
 	}{
 		"GivenSmall": { "12345", 60 },
 		"GivenMedium": { "2333133121414131402", 1928 },
+		"Endsfree": { "1342", 10 },
 	}
 
 	for _, c := range cases {

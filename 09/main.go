@@ -57,8 +57,13 @@ func expandDiskMap(diskMap []int) []int {
 
 func computeChecksumForUncompactedBlocks(blocks []int) int {
 	start, end := 0, len(blocks) - 1
-	checksum := 0
 
+	// There can be empty blocks at the end which we should ignore
+	for blocks[end] == -1 {
+		end -= 1
+	}
+
+	checksum := 0
 	for start <= end {
 		if blocks[start] == -1 {
 			checksum += start * blocks[end]
