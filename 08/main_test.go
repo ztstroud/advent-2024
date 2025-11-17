@@ -64,3 +64,20 @@ func TestCountAntinodes(t *testing.T) {
 	}
 }
 
+func TestCountAntinodesHarmonic(t *testing.T) {
+	input := []string{
+		".0..",
+		"....",
+		".0..",
+		"..A.",
+		"...A",
+	}
+
+	count := countAntinodesHarmonic(parseCity(input))
+	expected := 8
+
+	if count != expected {
+		t.Errorf("Expected %v to be %v", count, expected)
+	}
+}
+

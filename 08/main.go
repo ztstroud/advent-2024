@@ -96,3 +96,66 @@ func countAntinodes(city City) int {
 	return count
 }
 
+func gcd(a, b int) int {
+	if b == 0 {
+		return a
+	}
+
+	return gcd(b, a % b)
+}
+
+/*
+Count harmonic antinodes in a city
+
+To get harmonic antinodes, we need to do two additional things:
+1. Reduce the offset to the smallest offset pointing in the same direction
+2. Iterate along the offset to catch all positions
+*/
+func countAntinodesHarmonic(city City) int {
+	antinodes := make([][]bool, len(city))
+	for y, row := range city {
+		antinodes[y] = make([]bool, len(row))
+	}
+
+	groups := getAntennaGroups(city)
+	for _, ps := range groups {
+		for i, from := range ps {
+			for j := range i {
+				to := ps[j]
+
+				dx := to.x - from.x
+				dy := to.y - from.y
+
+				// The gcd allows us to find the smallest offset
+				gcd := gcd(dx, dy)
+
+				dx /= gcd
+				dy /= gcd
+
+				pos := from
+				for inBounds(city, pos) {
+					antinodes[pos.y][pos.x] = true
+					pos = Position{ pos.x + dx, pos.y + dy }
+				}
+
+				pos = from
+				for inBounds(city, pos) {
+					antinodes[pos.y][pos.x] = true
+					pos = Position{ pos.x - dx, pos.y - dy }
+				}
+			}
+		}
+	}
+
+	count := 0
+	for _, row := range antinodes {
+		for _, hasAntinode := range row {
+			if hasAntinode {
+				count += 1
+			}
+		}
+	}
+
+	return count
+}
+
