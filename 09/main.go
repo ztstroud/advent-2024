@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
+	"os"
 )
 
 func parseDiskMap(src []byte) ([]int, error) {
@@ -73,5 +75,27 @@ func computeChecksumForUncompactedBlocks(blocks []int) int {
 	}
 
 	return checksum
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must specify a file\n")
+	}
+
+	path := os.Args[1]
+	src, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatalf("Could not read file: %s\n%v\n", path, err)
+	}
+
+	diskMap, err := parseDiskMap(src)
+	if err != nil {
+		log.Fatalf("Invalid input data: %v\n", err)
+	}
+
+	blocks := expandDiskMap(diskMap)
+	checksum := computeChecksumForUncompactedBlocks(blocks)
+
+	fmt.Printf("Checksum: %d\n", checksum)
 }
 
