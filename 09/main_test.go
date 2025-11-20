@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -57,6 +58,14 @@ func TestExpandDiskMap(t *testing.T) {
 }
 
 func TestComputeChecksum(t *testing.T) {
+	funcs := map[string]func([]int) int{
+		"ExpandMemory": func(diskMap []int) int {
+			blocks := expandDiskMap(diskMap)
+			return computeChecksumForUncompactedBlocks(blocks)
+		},
+		"FromDiskMap": computeChecksumFromDiskMap,
+	}
+
 	cases := map[string]struct{
 		diskMap string
 		checksum int
@@ -66,18 +75,20 @@ func TestComputeChecksum(t *testing.T) {
 		"Endsfree": { "1342", 10 },
 	}
 
-	for name, c := range cases {
-		t.Run(name, func(t *testing.T) {
-			diskMap, err := parseDiskMap([]byte(c.diskMap))
-			if err != nil {
-				t.Errorf("Failed to parse disk map: %s (This is an error in the test)", c.diskMap)
-			}
+	for fnName, fn := range funcs {
+		for name, c := range cases {
+			t.Run(fmt.Sprintf("%s/%s", fnName, name), func(t *testing.T) {
+				diskMap, err := parseDiskMap([]byte(c.diskMap))
+				if err != nil {
+					t.Errorf("Failed to parse disk map: %s (This is an error in the test)", c.diskMap)
+				}
 
-			actual := computeChecksumForUncompactedBlocks(expandDiskMap(diskMap))
-			if actual != c.checksum {
-				t.Errorf("Expected %v to be %v", actual, c.checksum)
-			}
-		})
+				actual := fn(diskMap)
+				if actual != c.checksum {
+					t.Errorf("Expected %v to be %v", actual, c.checksum)
+				}
+			})
+		}
 	}
 
 }

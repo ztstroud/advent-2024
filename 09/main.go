@@ -82,6 +82,91 @@ func computeChecksumForUncompactedBlocks(blocks []int) int {
 	return checksum
 }
 
+func computeChecksumFromDiskMap(diskMap []int) int {
+	start :=  0
+	startOffset := 0
+	end := len(diskMap) - 1
+	endOffset := diskMap[end] - 1
+
+	incrementStart := func() {
+		startOffset += 1
+
+		// If a segment has zero length, this will immediately be true and we
+		// will move on to the next
+		for startOffset >= diskMap[start] {
+			start += 1
+
+			if start >= len(diskMap) {
+				break
+			}
+
+			startOffset = 0
+		}
+	}
+
+	decrementEnd := func() {
+		endOffset -= 1
+
+		// Similarly, if a segment has zero length this will move past it
+		for endOffset < 0 {
+			end -= 1
+
+			if end < 0 {
+				break
+			}
+
+			endOffset = diskMap[end] - 1
+		}
+	}
+
+	// Determining if a segment is a file or empty is now a check against the
+	// segment index
+	for end % 2 == 1 {
+		decrementEnd()
+	}
+
+	startNotAfterEnd := func() bool {
+		if start != end {
+			return start < end
+		}
+
+		return startOffset <= endOffset
+	}
+
+	// Separately keeping track of the index is easier than re-calculating it
+	// from the disk map each iteration
+	checksum, i := 0, 0
+	for startNotAfterEnd() {
+		// Just like the other solution, if the start pointer is empty we take
+		// from the end pointer
+		if start % 2 == 1 {
+			checksum += i * end / 2
+			decrementEnd()
+
+			// This is not so simple to replace. It looks like you could do it
+			// in a single step, but the loop actually is to account for empty
+			// file blocks after free spaces, like [1 1 0 1 1]. When pointing to
+			// the end, decrementing puts you in a free block. Decrementing
+			// again lands you on the first free segment, because the file
+			// segment was skipped
+			//
+			// It is doing too much work for large free segments.
+			for end % 2 == 1 {
+				decrementEnd()
+			}
+		} else {
+			checksum += i * start / 2
+		}
+
+		// We still always increment the start position, as we either used it or
+		// a value from the end in its place
+		incrementStart()
+		i += 1
+	}
+
+	return checksum
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must specify a file\n")
@@ -100,7 +185,9 @@ func main() {
 
 	blocks := expandDiskMap(diskMap)
 	checksum := computeChecksumForUncompactedBlocks(blocks)
+	checksum2 := computeChecksumFromDiskMap(blocks)
 
-	fmt.Printf("Checksum: %d\n", checksum)
+	fmt.Printf("            Checksum: %d\n", checksum)
+	fmt.Printf("Checksum from blocks: %d\n", checksum2)
 }
 
